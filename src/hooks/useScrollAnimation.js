@@ -1,10 +1,10 @@
 import { useRef } from 'react'
 import { useInView } from 'framer-motion'
 
-// once: false → animations replay when scrolling back up
+// once: true → animate in once, stay visible — prevents disappearing on mobile scroll
 export function useScrollAnimation(options = {}) {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: false, margin: '-8% 0px', ...options })
+  const isInView = useInView(ref, { once: true, margin: '-5% 0px', ...options })
   return { ref, isInView }
 }
 
