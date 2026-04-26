@@ -43,12 +43,12 @@ export default function App() {
       <main>
         <Hero onDonate={() => openDonate()} />
         <StatsBar />
-        <BridgingNeighborhoods />
         <TheProblem />
         <CivicMaps />
         <Solution />
         <HowItWorks />
         <Tokenomics />
+        <BridgingNeighborhoods />
         <Roadmap />
         <Community />
         <TreasuryVision />

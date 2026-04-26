@@ -3,42 +3,48 @@ import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { useScrollAnimation, fadeUp, stagger } from '../hooks/useScrollAnimation'
 
 // ── Community area numbers for neighborhood polygon highlighting ──────────────
-// Latino (red): Logan Sq, Humboldt Park, Little Village, Pilsen, Back of Yards
-const LATINO_AREAS  = new Set([22, 23, 30, 31, 61])
-// Black (blue): Bronzeville, South Shore, Englewood, Chatham, Auburn Gresham, Austin
-const BLACK_AREAS   = new Set([38, 43, 68, 44, 71, 25])
-// Additional context polygons (lighter styling)
-const CONTEXT_AREAS = new Set([35, 36, 37, 24, 26, 27, 29, 60, 42, 46, 49, 41])
+// Latino (red): Logan Sq(22), Humboldt(23), Little Village(30), Pilsen(31),
+//               New City/Back of Yards(61), McKinley Pk(59), East Side(52)
+const LATINO_AREAS  = new Set([22, 23, 30, 31, 59, 61, 52])
+// Black (blue): Grand Blvd/Bronzeville(38), South Shore(43), Englewood(68),
+//               Chatham(44), Auburn Gresham(71), Austin(25), Pullman(50), South Chicago(46)
+const BLACK_AREAS   = new Set([35, 38, 43, 68, 44, 71, 25, 50, 46])
 
-// ── Active trading neighborhoods (will appear in the animation) ───────────────
+// ── Active trading neighborhoods ──────────────────────────────────────────────
 const LATINO = [
-  { name:'Logan Square',   lat:41.923, lng:-87.704, color:'#E53950' },
-  { name:'Humboldt Park',  lat:41.900, lng:-87.725, color:'#E53950' },
-  { name:'Little Village', lat:41.852, lng:-87.719, color:'#E53950' },
-  { name:'Pilsen',         lat:41.858, lng:-87.662, color:'#E53950' },
-  { name:'Back of Yards',  lat:41.809, lng:-87.715, color:'#E53950' },
+  { name:'Logan Square',   lat:41.923, lng:-87.704, color:'#E53950' },  // li:0
+  { name:'Humboldt Park',  lat:41.900, lng:-87.725, color:'#E53950' },  // li:1
+  { name:'Little Village', lat:41.852, lng:-87.719, color:'#E53950' },  // li:2
+  { name:'Pilsen',         lat:41.858, lng:-87.662, color:'#E53950' },  // li:3
+  { name:'Back of Yards',  lat:41.809, lng:-87.715, color:'#E53950' },  // li:4
+  { name:'East Side',      lat:41.718, lng:-87.542, color:'#E53950' },  // li:5
 ]
 const BLACK = [
-  { name:'Bronzeville',     lat:41.822, lng:-87.619, color:'#0F5EA8' },
-  { name:'South Shore',     lat:41.762, lng:-87.573, color:'#0F5EA8' },
-  { name:'Englewood',       lat:41.780, lng:-87.647, color:'#0F5EA8' },
-  { name:'Chatham',         lat:41.743, lng:-87.609, color:'#0F5EA8' },
-  { name:'Auburn Gresham',  lat:41.737, lng:-87.653, color:'#0F5EA8' },
-  { name:'Austin',          lat:41.887, lng:-87.745, color:'#0F5EA8' },
+  { name:'Bronzeville',    lat:41.822, lng:-87.619, color:'#0F5EA8' },  // bi:0
+  { name:'South Shore',    lat:41.762, lng:-87.573, color:'#0F5EA8' },  // bi:1
+  { name:'Englewood',      lat:41.780, lng:-87.647, color:'#0F5EA8' },  // bi:2
+  { name:'Chatham',        lat:41.743, lng:-87.609, color:'#0F5EA8' },  // bi:3
+  { name:'Auburn Gresham', lat:41.737, lng:-87.653, color:'#0F5EA8' },  // bi:4
+  { name:'Austin',         lat:41.887, lng:-87.745, color:'#0F5EA8' },  // bi:5
+  { name:'South Chicago',  lat:41.729, lng:-87.558, color:'#0F5EA8' },  // bi:6
+  { name:'Pullman',        lat:41.707, lng:-87.608, color:'#0F5EA8' },  // bi:7
 ]
 
-// ── 10 connections with real user names — spans the whole city ────────────────
+// ── 13 connections — now reaching East Side, South Chicago, Pullman ───────────
 const CONNECTIONS = [
-  { li:0, bi:5, tx:{ icon:'✂️', service:'Haircut',        buyer:'Carlos V.',  provider:'Anthony D.', usd:27,  usdFee:3,  chi:15, chiFee:3  } },
-  { li:1, bi:0, tx:{ icon:'🌮', service:'Tacos al Pastor', buyer:'Diego R.',   provider:'Marcus B.',  usd:11,  usdFee:1,  chi:13, chiFee:2  } },
-  { li:2, bi:2, tx:{ icon:'🏠', service:'Home Repair',     buyer:'Maria G.',   provider:'Keisha W.',  usd:180, usdFee:20, chi:68, chiFee:12 } },
-  { li:3, bi:3, tx:{ icon:'📚', service:'Tutoring',        buyer:'Sofia M.',   provider:'Jerome L.',  usd:23,  usdFee:2,  chi:10, chiFee:2  } },
-  { li:4, bi:4, tx:{ icon:'🎧', service:'DJ Set',          buyer:'Ana P.',     provider:'DeShawn T.', usd:92,  usdFee:8,  chi:42, chiFee:8  } },
-  { li:2, bi:1, tx:{ icon:'💇', service:'Hair Braiding',   buyer:'Rosa C.',    provider:'Aisha J.',   usd:65,  usdFee:5,  chi:35, chiFee:6  } },
-  { li:3, bi:5, tx:{ icon:'🔧', service:'Auto Repair',     buyer:'Luis T.',    provider:'Anthony D.', usd:80,  usdFee:6,  chi:30, chiFee:5  } },
-  { li:0, bi:0, tx:{ icon:'💅', service:'Nail Salon',      buyer:'Ana P.',     provider:'Tamika R.',  usd:45,  usdFee:4,  chi:22, chiFee:4  } },
-  { li:1, bi:4, tx:{ icon:'🌿', service:'Lawn Service',    buyer:'Miguel H.',  provider:'Jerome L.',  usd:55,  usdFee:5,  chi:28, chiFee:5  } },
-  { li:4, bi:1, tx:{ icon:'🍽️', service:'Catering',        buyer:'Maria G.',   provider:'Dena M.',    usd:150, usdFee:12, chi:55, chiFee:8  } },
+  { li:0, bi:5, tx:{ icon:'✂️', service:'Haircut',        buyer:'Carlos V.',  provider:'Anthony D.', usd:27,  usdFee:3,  chi:15, chiFee:3  } }, // Logan Sq   → Austin
+  { li:1, bi:0, tx:{ icon:'🌮', service:'Tacos al Pastor', buyer:'Diego R.',   provider:'Marcus B.',  usd:11,  usdFee:1,  chi:13, chiFee:2  } }, // Humboldt   → Bronzeville
+  { li:2, bi:2, tx:{ icon:'🏠', service:'Home Repair',     buyer:'Maria G.',   provider:'Keisha W.',  usd:180, usdFee:20, chi:68, chiFee:12 } }, // Lil Vlg    → Englewood
+  { li:3, bi:3, tx:{ icon:'📚', service:'Tutoring',        buyer:'Sofia M.',   provider:'Jerome L.',  usd:23,  usdFee:2,  chi:10, chiFee:2  } }, // Pilsen     → Chatham
+  { li:4, bi:4, tx:{ icon:'🎧', service:'DJ Set',          buyer:'Ana P.',     provider:'DeShawn T.', usd:92,  usdFee:8,  chi:42, chiFee:8  } }, // Back Yards → Auburn Gresham
+  { li:2, bi:1, tx:{ icon:'💇', service:'Hair Braiding',   buyer:'Rosa C.',    provider:'Aisha J.',   usd:65,  usdFee:5,  chi:35, chiFee:6  } }, // Lil Vlg    → South Shore
+  { li:3, bi:5, tx:{ icon:'🔧', service:'Auto Repair',     buyer:'Luis T.',    provider:'Anthony D.', usd:80,  usdFee:6,  chi:30, chiFee:5  } }, // Pilsen     → Austin
+  { li:0, bi:0, tx:{ icon:'💅', service:'Nail Salon',      buyer:'Ana P.',     provider:'Tamika R.',  usd:45,  usdFee:4,  chi:22, chiFee:4  } }, // Logan Sq   → Bronzeville
+  { li:1, bi:4, tx:{ icon:'🌿', service:'Lawn Service',    buyer:'Miguel H.',  provider:'Jerome L.',  usd:55,  usdFee:5,  chi:28, chiFee:5  } }, // Humboldt   → Auburn Gresham
+  { li:4, bi:1, tx:{ icon:'🍽️', service:'Catering',        buyer:'Maria G.',   provider:'Dena M.',    usd:150, usdFee:12, chi:55, chiFee:8  } }, // Back Yards → South Shore
+  { li:3, bi:6, tx:{ icon:'🚗', service:'Rideshare',       buyer:'Elena V.',   provider:'Marcus T.',  usd:18,  usdFee:2,  chi:9,  chiFee:1  } }, // Pilsen     → South Chicago
+  { li:2, bi:7, tx:{ icon:'🎨', service:'Mural Art',       buyer:'Rosa C.',    provider:'Darius P.',  usd:300, usdFee:25, chi:90, chiFee:15 } }, // Lil Vlg    → Pullman
+  { li:5, bi:3, tx:{ icon:'🎵', service:'Music Lesson',    buyer:'Luis T.',    provider:'Jerome L.',  usd:40,  usdFee:3,  chi:20, chiFee:3  } }, // East Side  → Chatham
 ]
 
 // ── Leaflet HTML (self-contained: animation + postMessage → React) ────────────
@@ -63,7 +69,24 @@ html,body,#map{width:100%;height:100%;}
 .icon-sub{font:600 8px/1.3 Inter,sans-serif;text-align:center;margin-top:3px;white-space:nowrap;}
 .node-wrap{display:flex;flex-direction:column;align-items:center;}
 .node-dot{border-radius:50%;display:flex;align-items:center;justify-content:center;border:2.5px solid white;box-shadow:0 3px 12px rgba(0,0,0,.2);transition:transform .3s,box-shadow .3s;}
-.node-label{font:700 10px/1 Inter,sans-serif;margin-top:3px;white-space:nowrap;text-shadow:0 1px 3px rgba(255,255,255,.9);}
+.node-label{
+  font:800 12px/1.2 Inter,sans-serif;
+  margin-top:5px;
+  white-space:nowrap;
+  background:white;
+  border-radius:20px;
+  padding:3px 8px;
+  box-shadow:0 2px 8px rgba(0,0,0,.18);
+}
+.node-sublabel{
+  font:600 10px/1.2 Inter,sans-serif;
+  margin-top:2px;
+  white-space:nowrap;
+  background:rgba(255,255,255,.88);
+  border-radius:20px;
+  padding:2px 7px;
+  box-shadow:0 1px 4px rgba(0,0,0,.12);
+}
 </style>
 </head><body>
 <div id="map"></div>
@@ -75,7 +98,8 @@ const LA_SET = new Set(${laStr});
 const BA_SET = new Set(${baStr});
 const GEO_URL = 'https://data.cityofchicago.org/resource/igwz-8jzy.geojson?$limit=100';
 
-const map = L.map('map',{center:[41.83,-87.695],zoom:11,zoomControl:true,attributionControl:false});
+// Zoom out slightly to show Pullman, South Chicago, East Side in the far south/SE
+const map = L.map('map',{center:[41.80,-87.660],zoom:10,zoomControl:true,attributionControl:false});
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{maxZoom:18}).addTo(map);
 
 // ── Attribution (small, bottom right) ──
@@ -88,9 +112,9 @@ fetch(GEO_URL,{headers:{Accept:'application/json'}})
   L.geoJSON(geo,{
     style(f){
       const n = +(f.properties.area_numbe||0);
-      if(LA_SET.has(n)) return{fillColor:'#E53950',fillOpacity:.18,color:'#E53950',weight:1.8,opacity:.5};
-      if(BA_SET.has(n)) return{fillColor:'#0F5EA8',fillOpacity:.18,color:'#0F5EA8',weight:1.8,opacity:.5};
-      return{fillColor:'transparent',fillOpacity:0,color:'#C8D5E0',weight:.7,opacity:.6};
+      if(LA_SET.has(n)) return{fillColor:'#E53950',fillOpacity:.28,color:'#E53950',weight:2,opacity:.7};
+      if(BA_SET.has(n)) return{fillColor:'#0F5EA8',fillOpacity:.28,color:'#0F5EA8',weight:2,opacity:.7};
+      return{fillColor:'transparent',fillOpacity:0,color:'#C8D5E0',weight:.6,opacity:.5};
     },
     onEachFeature(f,layer){
       const n = +(f.properties.area_numbe||0);
@@ -104,13 +128,14 @@ fetch(GEO_URL,{headers:{Accept:'application/json'}})
 }).catch(()=>{});
 
 // ── Node icon helper ──
-function nodeIcon(emoji,label,color,size=36){
+function nodeIcon(emoji,label,sublabel,color,size=36){
   return L.divIcon({
     html:\`<div class="node-wrap">
       <div class="node-dot" style="width:\${size}px;height:\${size}px;background:\${color};font-size:\${size*.38}px">\${emoji}</div>
       <div class="node-label" style="color:\${color}">\${label}</div>
+      \${sublabel ? \`<div class="node-sublabel" style="color:\${color}88">\${sublabel}</div>\` : ''}
     </div>\`,
-    iconSize:[size+4,size+18],iconAnchor:[size/2+2,size/2],className:''
+    iconSize:[size+20, size+40], iconAnchor:[size/2+10, size/2], className:''
   });
 }
 
@@ -134,12 +159,12 @@ function movingIcon(text,bg,size=22){
 }
 
 // ── Fixed: DAO Treasury + Liquidity Reserve ──
-// Lakefront positions — Museum Campus (south) and Navy Pier (north)
-const TREASURY_LL  = [41.860,-87.614]; // Museum Campus / Soldier Field lakefront
-const LIQUIDITY_LL = [41.891,-87.609]; // Navy Pier / lakefront north
+// Lakefront — well separated, neither overlaps any active neighborhood
+const LIQUIDITY_LL = [41.899,-87.606]; // Navy Pier / Streeterville (north lakefront)
+const TREASURY_LL  = [41.864,-87.610]; // Grant Park / Millennium Park (mid lakefront, north of Bronzeville)
 
-let treasuryMarker  = L.marker(TREASURY_LL,  {icon:nodeIcon('🏛','DAO Treasury','#0F5EA8',52),zIndexOffset:600}).addTo(map);
-let liquidityMarker = L.marker(LIQUIDITY_LL, {icon:nodeIcon('💧','Liq. Reserve','#22C55E',52),zIndexOffset:600}).addTo(map);
+let treasuryMarker  = L.marker(TREASURY_LL,  {icon:nodeIcon('🏛','DAO Treasury',  'CHI fees → grants',       '#0F5EA8',52),zIndexOffset:600}).addTo(map);
+let liquidityMarker = L.marker(LIQUIDITY_LL, {icon:nodeIcon('💧','Liquidity Reserve','USD fees → market depth','#22C55E',52),zIndexOffset:600}).addTo(map);
 
 // ── Static neighborhood markers ──
 LATINO.forEach(n=>L.marker([n.lat,n.lng],{icon:nhIcon(n.color,n.name),zIndexOffset:300}).addTo(map));
@@ -237,17 +262,15 @@ function fireOne(connIdx){
   });
 }
 
-// ── Batch: fire 2–3 connections at once with 900ms stagger ───────────────────
+// ── One transaction at a time — slow and clear so every step is readable ─────
 let batchIdx=0;
 function fireBatch(){
-  // Pick 2 or 3 different connections
-  const count=2+(Math.random()>.45?1:0);
-  const pool=shuffle([...Array(CONNS.length).keys()]);
-  const chosen=pool.slice(0,count);
-  chosen.forEach((ci,i)=>setTimeout(()=>fireOne((batchIdx+ci)%CONNS.length),i*900));
-  batchIdx+=count;
-  // Next batch starts 6.5s after this one began (overlapping animation is intentional)
-  setTimeout(fireBatch,6500);
+  fireOne(batchIdx % CONNS.length);
+  batchIdx++;
+  // 11 seconds between transactions:
+  // 1.2s route draws → 3s particles fly → 1.8s branches → 2s linger = ~8s total
+  // +3s pause so the viewer can read the card before the next one starts
+  setTimeout(fireBatch,11000);
 }
 
 // Start after tiles + polygons have loaded
