@@ -9,7 +9,7 @@ const pillars = [
       </svg>
     ),
     title: 'Parallel Economy',
-    body: 'Every service is priced in both dollars and CHI. You keep real cash and CHI stays moving in the neighborhood. Nobody has to go all in on crypto to be part of it.',
+    body: 'Every service is priced in both dollars and CHI. The USD side feeds the liquidity reserve. The CHI side feeds the community treasury. Workers keep real cash. Nobody has to go all in on crypto to participate.',
     color: 'text-chi-red',
     border: 'border-chi-red/25 hover:border-chi-red/50',
     bg: 'bg-soft-red',
@@ -21,7 +21,7 @@ const pillars = [
       </svg>
     ),
     title: 'Community Treasury',
-    body: '60% of all CHI goes into a treasury that neighborhood councils actually control. They vote on grants, loans, and where the money goes. Not a board. Not an executive. The community.',
+    body: '60% of all CHI flows into a citywide DAO treasury. Delegates from every Chicago neighborhood vote on grants, loans, and community investments. Not a board. Not an executive. Chicago governs itself.',
     color: 'text-chi-blue',
     border: 'border-chi-blue/25 hover:border-chi-blue/50',
     bg: 'bg-soft-blue',
@@ -106,26 +106,61 @@ export default function Solution() {
           ))}
         </motion.div>
 
-        {/* Pull quote */}
+        {/* Programmed equality section */}
         <motion.div
           ref={quoteRef}
           variants={fadeIn}
           initial="hidden"
           animate={quoteInView ? 'visible' : 'hidden'}
-          className="text-center max-w-4xl mx-auto"
+          className="max-w-4xl mx-auto"
         >
-          <div className="glass rounded-3xl p-10 md:p-16 border border-chi-red/20 glow-red">
+          <div className="glass rounded-3xl p-10 md:p-16 border border-chi-red/20 glow-red mb-8">
             <div className="text-6xl text-chi-red/30 font-serif leading-none mb-4">&ldquo;</div>
             <p className="text-xl sm:text-2xl md:text-3xl font-light text-ink leading-relaxed italic mb-6">
-              Economic justice is not just a protest sign. It is a payment rail,
-              a community treasury, and neighbors choosing each other on purpose.
-              Chi Coin is what that looks like in practice.
+              This economy is not just designed for equality.
+              It is programmed for it.
+              The rules that prevent hoarding and manipulation are not policies.
+              They are code.
             </p>
             <div className="flex items-center justify-center gap-3">
               <div className="w-8 h-px bg-chi-red/40" />
               <span className="text-chi-red text-sm font-medium">Chi Coin Vision</span>
               <div className="w-8 h-px bg-chi-red/40" />
             </div>
+          </div>
+
+          {/* The rules */}
+          <div className="grid sm:grid-cols-2 gap-4">
+            {[
+              {
+                rule: '1% wallet cap',
+                what: 'No single wallet can hold more than 1% of the total CHI supply.',
+                why: 'Prevents any individual, institution, or whale from accumulating enough CHI to control the economy or dominate governance.',
+              },
+              {
+                rule: '1% burn on every transfer',
+                what: 'Every time CHI is transferred, 1% is permanently removed from the total supply.',
+                why: 'As supply shrinks over time and demand holds or grows, the value of every remaining CHI increases. Holders benefit. The economy stays healthy. No single actor can dominate it.',
+              },
+              {
+                rule: 'Governance by identity, not tokens',
+                what: 'One person, one vote in the citywide DAO. Your vote does not get bigger because you hold more CHI.',
+                why: 'In most token systems, wealth buys political power. In Chi Coin, it does not. A resident of Englewood has the same governance weight as anyone else.',
+              },
+              {
+                rule: '60% to community — not founders',
+                what: '60% of all CHI belongs to the citywide DAO treasury from day one.',
+                why: 'The people who built this do not own it. Chicago does. Founders hold 5%, vested over time. The community holds twelve times that.',
+              },
+            ].map((r, i) => (
+              <div key={i} className="glass rounded-2xl border border-chi-border p-6">
+                <div className="inline-block bg-chi-red text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+                  {r.rule}
+                </div>
+                <p className="text-sm font-semibold text-ink mb-2">{r.what}</p>
+                <p className="text-xs text-ink-muted leading-relaxed">{r.why}</p>
+              </div>
+            ))}
           </div>
         </motion.div>
       </div>

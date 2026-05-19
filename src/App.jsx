@@ -8,6 +8,7 @@ import Solution                from './components/Solution'
 import HowItWorks              from './components/HowItWorks'
 import BridgingNeighborhoods   from './components/BridgingNeighborhoods'
 import Tokenomics              from './components/Tokenomics'
+import EconomicSim             from './components/EconomicSim'
 import Roadmap                 from './components/Roadmap'
 import Community               from './components/Community'
 import TreasuryVision          from './components/TreasuryVision'
@@ -51,6 +52,7 @@ export default function App() {
         <Roadmap />
         <Community />
         <TreasuryVision />
+        <EconomicSim />
         <Invest onDonate={openDonate} />
       </main>
       <Footer

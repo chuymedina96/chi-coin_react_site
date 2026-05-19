@@ -25,7 +25,7 @@ const communities = [
   {
     name: 'Community Organizers',
     icon: '📢',
-    desc: 'Fund your work, mobilize your neighbors, and vote on where community money goes. Power built by the people who show up.',
+    desc: 'Send a delegate to the citywide DAO. Every neighborhood gets a voice in how community resources are spent. Power built by the people who show up.',
   },
   {
     name: 'Young Chicagoans',
