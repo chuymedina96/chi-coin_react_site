@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
-import { stripePromise, TIERS, createPaymentIntent } from '../lib/stripe'
+import { stripePromise, createPaymentIntent } from '../lib/stripe'
 
-// ── Stripe CardElement appearance (matches light theme) ──────────────────
+// ── Stripe CardElement appearance ────────────────────────────────────────
 const CARD_STYLE = {
   style: {
     base: {
@@ -16,23 +16,19 @@ const CARD_STYLE = {
   },
 }
 
-// ── Inner form (needs Stripe context) ────────────────────────────────────
-function CheckoutForm({ initialTier, onSuccess, onClose }) {
+// ── Inner form ────────────────────────────────────────────────────────────
+function CheckoutForm({ onSuccess, onClose }) {
   const stripe   = useStripe()
   const elements = useElements()
 
-  const [tier,    setTier]    = useState(initialTier || 'community')
-  const [custom,  setCustom]  = useState('')
+  const [amount,  setAmount]  = useState('')
   const [name,    setName]    = useState('')
   const [email,   setEmail]   = useState('')
-  const [status,  setStatus]  = useState('idle')   // idle | loading | success | error
+  const [status,  setStatus]  = useState('idle')
   const [errMsg,  setErrMsg]  = useState('')
 
-  const selectedTier  = TIERS.find(t => t.id === tier)
-  const dollarAmount  = tier === 'custom'
-    ? (parseFloat(custom) || 0)
-    : selectedTier.amount
-  const amountCents   = Math.round(dollarAmount * 100)
+  const dollarAmount = parseFloat(amount) || 0
+  const amountCents  = Math.round(dollarAmount * 100)
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -44,13 +40,12 @@ function CheckoutForm({ initialTier, onSuccess, onClose }) {
     try {
       const { clientSecret, demo } = await createPaymentIntent({
         amountCents,
-        tier,
+        tier: 'custom',
         email,
         name,
       })
 
       if (demo) {
-        // Demo mode — no real charge
         setStatus('success')
         return
       }
@@ -91,19 +86,8 @@ function CheckoutForm({ initialTier, onSuccess, onClose }) {
               : "This was a demo payment — no charge was made. Wire VITE_STRIPE_PK + VITE_API_URL to go live."}
           </p>
         </div>
-        <div className="glass rounded-2xl border border-chi-border px-6 py-4 text-sm text-ink-dim text-left w-full max-w-xs">
-          <p className="font-semibold text-ink mb-1">You'll receive:</p>
-          {selectedTier?.id !== 'custom'
-            ? TIERS.find(t => t.id === tier)
-              ? <p className="text-chi-blue font-bold">{TIERS.find(t => t.id === tier).coins}</p>
-              : null
-            : <p className="text-chi-blue font-bold">Pro-rated CHI based on contribution</p>
-          }
-          <p className="text-ink-muted text-xs mt-1">Tokens distributed at launch</p>
-        </div>
-        <button onClick={onClose} className="btn-primary px-8 py-3">
-          Close
-        </button>
+        <p className="text-xs text-ink-muted">CHI tokens will be distributed at launch.</p>
+        <button onClick={onClose} className="btn-primary px-8 py-3">Close</button>
       </div>
     )
   }
@@ -111,53 +95,25 @@ function CheckoutForm({ initialTier, onSuccess, onClose }) {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
-      {/* Tier selector */}
+      {/* Amount */}
       <div>
         <label className="text-xs font-bold text-ink-muted uppercase tracking-widest mb-2 block">
-          Contribution Tier
+          Contribution Amount (USD)
         </label>
-        <div className="grid grid-cols-2 gap-2">
-          {TIERS.map(t => (
-            <button
-              key={t.id}
-              type="button"
-              onClick={() => setTier(t.id)}
-              className={`rounded-xl px-4 py-3 text-left border transition-all duration-200 ${
-                tier === t.id
-                  ? 'border-chi-blue bg-soft-blue'
-                  : 'border-chi-border bg-white hover:border-chi-blue-light'
-              }`}
-            >
-              <div className={`text-sm font-bold ${tier === t.id ? 'text-chi-blue' : 'text-ink'}`}>
-                {t.amount ? `$${t.amount.toLocaleString()}` : 'Custom'}
-              </div>
-              <div className="text-[10px] text-ink-muted">{t.coins}</div>
-            </button>
-          ))}
+        <div className="relative">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted font-semibold">$</span>
+          <input
+            type="number"
+            min="1"
+            step="1"
+            value={amount}
+            onChange={e => setAmount(e.target.value)}
+            placeholder="Enter amount"
+            required
+            className="w-full pl-7 pr-4 py-3 rounded-xl border border-chi-border bg-white text-ink placeholder-ink-faint focus:outline-none focus:border-chi-blue transition-colors text-sm"
+          />
         </div>
       </div>
-
-      {/* Custom amount */}
-      {tier === 'custom' && (
-        <div>
-          <label className="text-xs font-bold text-ink-muted uppercase tracking-widest mb-2 block">
-            Custom Amount (USD)
-          </label>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted font-semibold">$</span>
-            <input
-              type="number"
-              min="1"
-              step="1"
-              value={custom}
-              onChange={e => setCustom(e.target.value)}
-              placeholder="Enter amount"
-              className="w-full pl-7 pr-4 py-3 rounded-xl border border-chi-border bg-white text-ink placeholder-ink-faint focus:outline-none focus:border-chi-blue transition-colors text-sm"
-              required
-            />
-          </div>
-        </div>
-      )}
 
       {/* Name + Email */}
       <div className="grid grid-cols-2 gap-3">
@@ -185,7 +141,7 @@ function CheckoutForm({ initialTier, onSuccess, onClose }) {
         </div>
       </div>
 
-      {/* Card Element */}
+      {/* Card */}
       <div>
         <label className="text-xs font-bold text-ink-muted uppercase tracking-widest mb-2 block">
           Card Details
@@ -210,7 +166,7 @@ function CheckoutForm({ initialTier, onSuccess, onClose }) {
         </div>
       )}
 
-      {/* Demo mode notice */}
+      {/* Demo notice */}
       {!stripePromise && (
         <div className="rounded-xl bg-soft-blue border border-chi-blue/20 px-4 py-3 text-xs text-chi-blue leading-relaxed">
           <strong>Demo mode</strong> — no real charge will occur. Add your Stripe publishable key to activate live payments.
@@ -232,7 +188,7 @@ function CheckoutForm({ initialTier, onSuccess, onClose }) {
             Processing…
           </span>
         ) : (
-          `Contribute $${dollarAmount > 0 ? dollarAmount.toLocaleString() : '—'}`
+          `Contribute${dollarAmount > 0 ? ` $${dollarAmount.toLocaleString()}` : ''}`
         )}
       </button>
 
@@ -244,7 +200,7 @@ function CheckoutForm({ initialTier, onSuccess, onClose }) {
 }
 
 // ── Modal shell ───────────────────────────────────────────────────────────
-export default function DonateModal({ isOpen, onClose, initialTier }) {
+export default function DonateModal({ isOpen, onClose }) {
   useEffect(() => {
     if (isOpen) document.body.style.overflow = 'hidden'
     else        document.body.style.overflow = ''
@@ -280,10 +236,9 @@ export default function DonateModal({ isOpen, onClose, initialTier }) {
         </div>
 
         {/* Form */}
-        {/* Elements is safe with stripe={null} — hooks return null, demo mode handles it */}
         <div className="px-7 py-6">
           <Elements stripe={stripePromise}>
-            <CheckoutForm initialTier={initialTier} onSuccess={() => {}} onClose={onClose} />
+            <CheckoutForm onSuccess={() => {}} onClose={onClose} />
           </Elements>
         </div>
       </div>

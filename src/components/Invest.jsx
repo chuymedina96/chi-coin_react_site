@@ -1,80 +1,14 @@
 import { motion } from 'framer-motion'
-import { useScrollAnimation, fadeUp, stagger, scaleIn } from '../hooks/useScrollAnimation'
+import { useScrollAnimation, fadeUp, stagger } from '../hooks/useScrollAnimation'
 
 // ── Update RAISED as real contributions come in ────────────────────────────
 const GOAL   = 50_000
 const RAISED = 0          // ← update this as donations come in
 const PCT    = Math.min(Math.round((RAISED / GOAL) * 100), 100)
 
-const tiers = [
-  {
-    id: 'community',
-    name: 'Community',
-    price: '$100',
-    coins: '1,000 CHI',
-    color: 'border-chi-border',
-    highlight: false,
-    perks: [
-      'Early access to Chi Coin app',
-      'Community member NFT badge',
-      'Voting rights in DAO governance',
-      'Monthly community newsletter',
-    ],
-  },
-  {
-    id: 'neighbor',
-    name: 'Neighbor',
-    price: '$1,000',
-    coins: '11,000 CHI',
-    color: 'border-chi-blue/50',
-    highlight: true,
-    badge: 'Most Popular',
-    perks: [
-      'Everything in Community tier',
-      '10% bonus tokens',
-      'Merchant network early access',
-      'Quarterly investor call access',
-      'Name in founding supporter list',
-    ],
-  },
-  {
-    id: 'block_club',
-    name: 'Block Club',
-    price: '$10,000',
-    coins: '125,000 CHI',
-    color: 'border-chi-blue-light/40',
-    highlight: false,
-    perks: [
-      'Everything in Neighbor tier',
-      '25% bonus tokens',
-      'Seat at community advisory table',
-      'Dedicated account manager',
-      'Logo on app & website',
-      'Priority grant review access',
-    ],
-  },
-  {
-    id: 'custom',
-    name: 'Institutional',
-    price: 'Custom',
-    coins: 'Contact us',
-    color: 'border-chi-blue/30',
-    highlight: false,
-    perks: [
-      'Custom token allocation',
-      'Impact reporting & ESG data',
-      'Co-branding opportunities',
-      'Board observer seat (optional)',
-      'Structured liquidity agreement',
-      'Direct treasury partnership',
-    ],
-  },
-]
-
 export default function Invest({ onDonate }) {
   const { ref: titleRef,    isInView: titleInView    } = useScrollAnimation()
   const { ref: progressRef, isInView: progressInView } = useScrollAnimation()
-  const { ref: tierRef,     isInView: tierInView     } = useScrollAnimation()
   const { ref: ctaRef,      isInView: ctaInView      } = useScrollAnimation()
 
   return (
@@ -110,7 +44,7 @@ export default function Invest({ onDonate }) {
           initial={{ opacity: 0, y: 32 }}
           animate={progressInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
           transition={{ duration: 0.7 }}
-          className="glass rounded-2xl border border-chi-border p-8 mb-14 max-w-3xl mx-auto"
+          className="glass rounded-2xl border border-chi-border p-8 mb-20 max-w-3xl mx-auto"
         >
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-5">
             <div>
@@ -127,7 +61,7 @@ export default function Invest({ onDonate }) {
                 <p className="text-xs text-ink-muted">funded</p>
               </div>
               <button
-                onClick={() => onDonate?.('community')}
+                onClick={() => onDonate?.()}
                 className="btn-primary px-6 py-3 text-sm whitespace-nowrap"
               >
                 Donate Now
@@ -158,55 +92,6 @@ export default function Invest({ onDonate }) {
           </div>
         </motion.div>
 
-        {/* ── Tier Cards ────────────────────────────────────────────────────── */}
-        <motion.div
-          ref={tierRef}
-          variants={stagger}
-          initial="hidden"
-          animate={tierInView ? 'visible' : 'hidden'}
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-20"
-        >
-          {tiers.map((t, i) => (
-            <motion.div
-              key={i}
-              variants={scaleIn}
-              className={`glass rounded-2xl border ${t.color} flex flex-col overflow-hidden relative
-                ${t.highlight ? 'shadow-2xl shadow-chi-blue/15' : ''}`}
-            >
-              {t.badge && (
-                <div className="absolute top-0 left-0 right-0 text-center py-1.5 bg-chi-blue text-white text-[10px] font-bold tracking-widest uppercase">
-                  {t.badge}
-                </div>
-              )}
-              <div className={`p-7 flex flex-col h-full ${t.badge ? 'pt-10' : ''}`}>
-                <div className="text-sm font-bold text-ink-muted mb-1">{t.name}</div>
-                <div className="text-3xl font-black text-ink mb-1">{t.price}</div>
-                <div className="text-sm text-chi-blue font-semibold mb-6">{t.coins}</div>
-                <ul className="flex flex-col gap-2.5 mb-7 flex-1">
-                  {t.perks.map((perk, j) => (
-                    <li key={j} className="flex items-start gap-2">
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="mt-0.5 shrink-0 text-chi-blue">
-                        <path d="M2.5 7l3 3 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                      <span className="text-xs text-ink-dim leading-relaxed">{perk}</span>
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  onClick={() => onDonate?.(t.id)}
-                  className={`w-full text-center py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
-                    t.highlight
-                      ? 'bg-chi-blue text-white hover:bg-chi-blue-light hover:shadow-lg hover:shadow-chi-blue/25'
-                      : 'border border-chi-border text-ink-dim hover:border-chi-blue hover:text-chi-blue hover:bg-soft-blue'
-                  }`}
-                >
-                  {t.id === 'custom' ? 'Contact Us' : 'Donate Now'}
-                </button>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-
         {/* ── Bottom CTA ────────────────────────────────────────────────────── */}
         <motion.div
           ref={ctaRef}
@@ -226,7 +111,7 @@ export default function Invest({ onDonate }) {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
-              onClick={() => onDonate?.('neighbor')}
+              onClick={() => onDonate?.()}
               className="btn-primary text-sm px-8 py-4"
             >
               Contribute Now

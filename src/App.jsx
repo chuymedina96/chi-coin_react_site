@@ -25,8 +25,7 @@ import LegalModal      from './components/modals/LegalModal'
 export default function App() {
   // Donate modal
   const [donateOpen, setDonateOpen] = useState(false)
-  const [donateTier, setDonateTier] = useState('community')
-  function openDonate(tier = 'community') { setDonateTier(tier); setDonateOpen(true) }
+  function openDonate() { setDonateOpen(true) }
 
   // Page modals — one state drives all of them
   const [modal,      setModal]      = useState(null)  // null | string key
@@ -64,7 +63,6 @@ export default function App() {
       <DonateModal
         isOpen={donateOpen}
         onClose={() => setDonateOpen(false)}
-        initialTier={donateTier}
       />
 
       {/* Page modals */}
