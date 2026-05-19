@@ -54,9 +54,9 @@ export default function Hero() {
 
             {/* Sub */}
             <motion.p variants={fadeUp} className="text-lg text-ink-dim leading-relaxed max-w-lg font-light">
-              A local economy connecting Black and Latino neighborhoods —
-              where neighbors trade with neighbors, money stays local,
-              and Chicago's communities build wealth together.
+              Chi Coin is a community currency built for the Black, Latino/a,
+              and working-class neighborhoods of Chicago's South and West Sides.
+              Neighbors trading with neighbors. Money staying home.
             </motion.p>
 
             {/* CTAs */}

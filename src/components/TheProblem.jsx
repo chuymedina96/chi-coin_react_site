@@ -8,28 +8,28 @@ const problems = [
   {
     stat: '73%',
     label: 'of South Side zip codes were redlined in the 1930s',
-    detail: 'HOLC maps (1935–1940) marked Black and immigrant neighborhoods as "hazardous," denying mortgages for generations.',
+    detail: 'Federal housing maps from the late 1930s labeled Black and immigrant neighborhoods as "hazardous," cutting off entire communities from mortgages for generations.',
     accent: 'border-chi-red/30 bg-soft-red',
     statColor: 'text-chi-red',
   },
   {
     stat: '$31K',
     label: 'median income in Englewood vs. $110K in Lincoln Park',
-    detail: 'A 20-minute train ride separates communities by nearly $80,000 in annual household income — a direct policy legacy.',
+    detail: 'That is an $80,000 difference between two neighborhoods a 20-minute train ride apart. Not a coincidence. The result of deliberate policy choices that still play out today.',
     accent: 'border-chi-border bg-bg-card-2',
     statColor: 'text-ink',
   },
   {
     stat: '3×',
     label: 'more likely to be denied a bank loan on the South & West Sides',
-    detail: 'Bank deserts and lending discrimination pushed residents into predatory lenders charging 300%+ APR.',
+    detail: 'When mainstream banks say no, payday lenders charge over 300% APR to fill the gap. That is not a market failure. That is what happens when communities are systematically excluded.',
     accent: 'border-chi-blue/30 bg-soft-blue',
     statColor: 'text-chi-blue',
   },
   {
     stat: '14 yrs',
     label: 'life expectancy gap between zip codes 8 miles apart',
-    detail: 'ZIP code determines health outcomes more than genetics. Pollution, food access, and chronic stress compound across generations.',
+    detail: 'Where you live in Chicago shapes how long you live. Pollution, food access, and decades of disinvestment stack up. That gap does not close on its own.',
     accent: 'border-chi-red/20 bg-soft-red',
     statColor: 'text-chi-red',
   },
@@ -66,8 +66,10 @@ export default function TheProblem() {
             <span className="text-gradient"> not an accident</span>
           </motion.h2>
           <motion.p variants={fadeUp} className="text-lg text-ink-dim leading-relaxed">
-            Federal redlining, urban renewal demolitions, and deliberate disinvestment created
-            the inequality we see today. Chi Coin is local economic infrastructure built to grow a new economy that works better for everyone in this city.
+            The racial wealth gap in Chicago is not a mystery. It is the result of deliberate
+            policy choices that targeted Black and Latino/a communities for decades. Redlining,
+            urban renewal, and systematic disinvestment did not happen to these neighborhoods.
+            They were done to them. Chi Coin is part of the movement to change that.
           </motion.p>
         </motion.div>
 
@@ -154,19 +156,19 @@ export default function TheProblem() {
               <span className="text-chi-red"> who builds wealth</span> today
             </h3>
             <p className="text-ink-dim leading-relaxed">
-              The HOLC rated neighborhoods A–D. Communities labeled "D" (red)
-              were predominantly Black and immigrant — blocked from federally-backed
-              mortgages, the primary wealth-building tool of the 20th century.
+              The federal government graded neighborhoods A through D. Areas marked red were predominantly
+              Black and immigrant. That grade locked entire communities out of federally backed mortgages,
+              the main tool for generational wealth building in 20th century America.
             </p>
             <p className="text-ink-dim leading-relaxed">
-              The correlation between 1940 redlined zones and today's poverty,
-              lead levels, and life expectancy is not coincidental. It's causal.
-              Chi Coin is local economic infrastructure that helps neighborhoods build their own path forward.
+              The same zip codes marked red in 1940 have the highest poverty rates, lowest life expectancy,
+              and least banking access today. Structural racism does not disappear on its own.
+              Chi Coin is part of building the infrastructure for communities to reclaim what was taken.
             </p>
             {[
-              'Blocked home ownership — the primary wealth-building tool',
-              'Concentrated poverty through CHA demolitions (Robert Taylor, Cabrini-Green)',
-              'Denied small business loans and banking access across the South & West Sides',
+              'Redlining locked Black and Latino/a families out of home ownership and generational wealth for decades',
+              'The demolition of the Robert Taylor Homes and Cabrini-Green concentrated poverty with no real plan for residents',
+              'Loan denial rates for Black and Latino/a small business owners remain significantly higher today',
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-chi-red mt-2 shrink-0" />

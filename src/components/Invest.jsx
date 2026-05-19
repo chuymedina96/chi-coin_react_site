@@ -33,8 +33,8 @@ export default function Invest({ onDonate }) {
             <span className="text-gradient"> next economy</span>
           </motion.h2>
           <motion.p variants={fadeUp} className="text-lg text-ink-dim">
-            Every dollar you contribute helps launch the Chi Coin economy —
-            and you receive Chi Coins in return, distributed at launch.
+            Every dollar you put in helps get Chi Coin off the ground.
+            You receive Chi Coins in return, distributed when we launch.
           </motion.p>
         </motion.div>
 
@@ -102,12 +102,13 @@ export default function Invest({ onDonate }) {
         >
           <img src="/chicoin-logo.png" alt="Chi Coin" className="w-16 h-16 rounded-full object-cover mx-auto mb-6 shadow-md shadow-chi-blue/15" />
           <h3 className="text-3xl md:text-4xl font-black mb-4 text-ink">
-            Ready to build Chicago's
-            <span className="text-chi-blue"> economic future?</span>
+            Ready to invest in
+            <span className="text-chi-blue"> economic justice?</span>
           </h3>
           <p className="text-ink-dim mb-8 max-w-xl mx-auto">
-            Join early supporters — community members, local businesses, and impact investors —
-            who believe Chicago's South and West Sides can reclaim their wealth.
+            Early supporters include community members, Black and Latino/a-owned businesses,
+            and impact investors who believe disinvested neighborhoods deserve the same
+            tools as the rest of this city.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button

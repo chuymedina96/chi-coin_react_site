@@ -4,27 +4,27 @@ import { useScrollAnimation, fadeUp, stagger } from '../hooks/useScrollAnimation
 const phases = [
   {
     phase: 'Phase 1',
-    period: 'Q3 2025 — Q1 2026',
+    period: 'Q3 2025 through Q1 2026',
     title: 'Foundation',
     status: 'active',
     items: [
-      'Smart contract audit & deployment on Solana',
-      'Mobile app launch (iOS + Android)',
-      'Pilot merchant network — 50 South Side businesses',
+      'Smart contract audit and deployment on Solana',
+      'Mobile app launch on iOS and Android',
+      'Pilot merchant network with 50 South Side businesses',
       'Community treasury DAO formation',
       'Financial literacy curriculum launch',
     ],
   },
   {
     phase: 'Phase 2',
-    period: 'Q2 2026 — Q4 2026',
+    period: 'Q2 2026 through Q4 2026',
     title: 'Growth',
     status: 'upcoming',
     items: [
-      'Public token sale (community-priority allocation)',
-      'Expand to 200+ merchant partners',
-      'Neighborhood council governance launch',
-      'First community grant round ($500K)',
+      'Public token sale with community-priority allocation',
+      'Expand to 200 or more merchant partners',
+      'Neighborhood council governance goes live',
+      'First community grant round at $500K',
       'West Side expansion',
     ],
   },
@@ -86,7 +86,7 @@ export default function Roadmap() {
             <span className="text-gradient"> economic justice</span>
           </motion.h2>
           <motion.p variants={fadeUp} className="text-lg text-ink-dim">
-            A four-phase plan to build, grow, and sustain community wealth for generations.
+            Here is where we are headed and what we are focused on right now.
           </motion.p>
         </motion.div>
 

@@ -9,7 +9,7 @@ const pillars = [
       </svg>
     ),
     title: 'Parallel Economy',
-    body: 'Services are priced USD + CHI. Workers keep real cash; CHI circulates locally. No one has to go all-in on crypto to participate.',
+    body: 'Every service is priced in both dollars and CHI. You keep real cash and CHI stays moving in the neighborhood. Nobody has to go all in on crypto to be part of it.',
     color: 'text-chi-red',
     border: 'border-chi-red/25 hover:border-chi-red/50',
     bg: 'bg-soft-red',
@@ -21,7 +21,7 @@ const pillars = [
       </svg>
     ),
     title: 'Community Treasury',
-    body: '60% of all CHI funds a DAO treasury controlled by neighborhood councils — grants, loans, and direct community investment.',
+    body: '60% of all CHI goes into a treasury that neighborhood councils actually control. They vote on grants, loans, and where the money goes. Not a board. Not an executive. The community.',
     color: 'text-chi-blue',
     border: 'border-chi-blue/25 hover:border-chi-blue/50',
     bg: 'bg-soft-blue',
@@ -33,7 +33,7 @@ const pillars = [
       </svg>
     ),
     title: 'Anti-Manipulation',
-    body: '1% wallet cap, 1% burn on transfers, governance by identity not tokens. Whales can\'t buy political power in this economy.',
+    body: 'Governance runs on identity, not how many tokens you hold. There is a 1% wallet cap and a 1% burn on transfers. You cannot buy your way to the top here.',
     color: 'text-ink',
     border: 'border-chi-border hover:border-chi-border-soft',
     bg: 'bg-bg-card-2',
@@ -46,7 +46,7 @@ const pillars = [
       </svg>
     ),
     title: 'Local Merchant Network',
-    body: 'Book services, pay neighbors, support local businesses. Every transaction keeps value circulating inside the community.',
+    body: 'Book a haircut, hire a plumber, buy from a local shop. Every time money moves between neighbors it stays in the neighborhood instead of leaving it.',
     color: 'text-chi-red',
     border: 'border-chi-red/25 hover:border-chi-red/50',
     bg: 'bg-soft-red',
@@ -79,9 +79,8 @@ export default function Solution() {
             <span className="text-gradient"> Built from the ground up.</span>
           </motion.h2>
           <motion.p variants={fadeUp} className="text-lg text-ink-dim leading-relaxed">
-            Chi Coin is local economic infrastructure — a payment rail, a services marketplace,
-            a community treasury, and a governance layer. Everything neighbors need
-            to build real wealth together, in one app.
+            Chi Coin is how neighbors pay each other, support local businesses, pool resources,
+            and make decisions together. Not a product built for Chicago. A tool built with it.
           </motion.p>
         </motion.div>
 
@@ -118,9 +117,9 @@ export default function Solution() {
           <div className="glass rounded-3xl p-10 md:p-16 border border-chi-red/20 glow-red">
             <div className="text-6xl text-chi-red/30 font-serif leading-none mb-4">&ldquo;</div>
             <p className="text-xl sm:text-2xl md:text-3xl font-light text-ink leading-relaxed italic mb-6">
-              When neighbors spend with each other, money stays local.
-              When money stays local, neighborhoods grow stronger.
-              Chi Coin is the infrastructure that makes it happen.
+              Economic justice is not just a protest sign. It is a payment rail,
+              a community treasury, and neighbors choosing each other on purpose.
+              Chi Coin is what that looks like in practice.
             </p>
             <div className="flex items-center justify-center gap-3">
               <div className="w-8 h-px bg-chi-red/40" />
